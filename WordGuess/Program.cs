@@ -26,19 +26,22 @@ namespace WordGuess
         {
             var phrases = new List<string>();
             string[] filePhrases;
-            try
-            {
+            //try
+            //{
                 filePhrases = File.ReadAllLines(@"..\..\phrases.txt");
-            }
-            catch (FileNotFoundException fnfe)
-            {
-                Console.WriteLine("ERROR: FILE NOT FOUND");
-                Console.ReadKey();
-            }
+                phrases = filePhrases.ToList();
+            //}
+            //catch (FileNotFoundException fnfe)
+            //{
+            //    Console.WriteLine("ERROR: FILE NOT FOUND");
+            //    Console.ReadKey();
+            //    fnfe.Source
+            //}
             //phrases.Add("To be or not to be, that is the question");
             //phrases.Add("All the world's a stage");
             //phrases.Add("Parting is such sweet sorrow");
             //phrases.Add("To thine own self be true");
+            
             return phrases;
         }
 
@@ -199,7 +202,7 @@ namespace WordGuess
                 if (guessedCharacters.Contains(guess))
                 {
                     Console.WriteLine();
-                    Console.Write("You have already guessed that character. ");
+                    Console.WriteLine("You have already guessed that character. ");
                 }
                 else
                 {
