@@ -8,6 +8,7 @@ namespace WordGuess
 {
     class Program
     {
+        const int MaximumIncorrectGuesses = 10;
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to the Word Guess app!");
@@ -51,9 +52,47 @@ namespace WordGuess
             string phrase = SelectPhrase(phrases);
             char[] phraseCharacters = GetPhraseCharacters(phrase);
             HashSet<char> phraseDistinctCharacters = GetPhraseDistinctCharacters(phraseCharacters);
-            var phraseGuessedCharacters = new List<char>();
-            DisplayPhrase(phraseCharacters, phraseGuessedCharacters);
 
+            bool gameWin = false;
+            var phraseGuessedCharacters = new List<char>();
+            int incorrectGuesses = 0;
+            
+            do
+            {
+                Console.WriteLine();
+                Console.WriteLine("You have {0} guesses remaining.", MaximumIncorrectGuesses - incorrectGuesses);
+                DisplayPhrase(phraseCharacters, phraseGuessedCharacters);
+                char guessedCharacter = GetCharacterGuess(phraseGuessedCharacters);
+                if (phraseDistinctCharacters.Contains(guessedCharacter))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Correct! {0} is in the phrase.", guessedCharacter);
+                    if (phraseGuessedCharacters.Count == phraseDistinctCharacters.Count)
+                    {
+                        gameWin = true;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Sorry, {0} is not in the phrase.", guessedCharacter);
+                    incorrectGuesses++;
+                }
+            }
+            while (!gameWin && incorrectGuesses < MaximumIncorrectGuesses);
+
+            if (!gameWin)
+            {
+                Console.WriteLine();
+                Console.WriteLine("You're out of guesses. Better luck next time! The phrase is:");
+                Console.WriteLine(phrase.ToUpper());
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Well done! The phrase is: ");
+                Console.WriteLine(phrase.ToUpper());
+            }
         }
 
         /// <summary>
@@ -103,7 +142,7 @@ namespace WordGuess
         /// <param name="phraseGuessedCharacters">The list of guessed characters.</param>
         static void DisplayPhrase(char[] phraseCharacters, List<char> phraseGuessedCharacters)
         {
-            foreach(char character in phraseCharacters)
+            foreach (char character in phraseCharacters)
             {
                 if (phraseGuessedCharacters.Contains(character) || IsNotLetter(character))
                 {
@@ -116,6 +155,51 @@ namespace WordGuess
             }
             Console.WriteLine();
         }
-        
+
+        /// <summary>
+        /// Prompts the player to input a character and returns the character if it has not yet been guessed.
+        /// </summary>
+        /// <param name="guessedCharacters">The list of characters already guessed.</param>
+        /// <returns>The new character.</returns>
+        static char GetCharacterGuess(List<char> guessedCharacters)
+        {
+            bool newCharacter = false;
+            bool validCharacter = false;
+            char guess;
+            do
+            {
+                do
+                {
+                    Console.WriteLine();
+                    Console.Write("Please enter a letter: ");
+                    guess = Console.ReadKey().KeyChar;
+                    if (IsNotLetter(guess))
+                    {
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        validCharacter = true;
+                    }
+                }
+                while (!validCharacter);
+
+                guess = char.ToUpper(guess);
+                if (guessedCharacters.Contains(guess))
+                {
+                    Console.WriteLine();
+                    Console.Write("You have already guessed that character. ");
+                }
+                else
+                {
+                    guessedCharacters.Add(guess);
+                    newCharacter = true;
+                }
+            }
+            while (!newCharacter);
+
+            return guess;
+            
+        }
     }
 }
