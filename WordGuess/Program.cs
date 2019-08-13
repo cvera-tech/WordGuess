@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,10 +25,20 @@ namespace WordGuess
         static List<string> GetPhrases()
         {
             var phrases = new List<string>();
-            phrases.Add("To be or not to be, that is the question");
-            phrases.Add("All the world's a stage");
-            phrases.Add("Parting is such sweet sorrow");
-            phrases.Add("To thine own self be true");
+            string[] filePhrases;
+            try
+            {
+                filePhrases = File.ReadAllLines(@"..\..\phrases.txt");
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                Console.WriteLine("ERROR: FILE NOT FOUND");
+                Console.ReadKey();
+            }
+            //phrases.Add("To be or not to be, that is the question");
+            //phrases.Add("All the world's a stage");
+            //phrases.Add("Parting is such sweet sorrow");
+            //phrases.Add("To thine own self be true");
             return phrases;
         }
 
@@ -56,7 +67,7 @@ namespace WordGuess
             bool gameWin = false;
             var phraseGuessedCharacters = new List<char>();
             int incorrectGuesses = 0;
-            
+
             do
             {
                 Console.WriteLine();
@@ -199,7 +210,7 @@ namespace WordGuess
             while (!newCharacter);
 
             return guess;
-            
+
         }
     }
 }
