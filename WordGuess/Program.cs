@@ -50,7 +50,9 @@ namespace WordGuess
         {
             string phrase = SelectPhrase(phrases);
             char[] phraseCharacters = GetPhraseCharacters(phrase);
-            HashSet<char> distinctCharacters = GetPhraseDistinctCharacters(phraseCharacters);
+            HashSet<char> phraseDistinctCharacters = GetPhraseDistinctCharacters(phraseCharacters);
+            var phraseGuessedCharacters = new List<char>();
+            DisplayPhrase(phraseCharacters, phraseGuessedCharacters);
 
         }
 
@@ -73,7 +75,7 @@ namespace WordGuess
         static HashSet<char> GetPhraseDistinctCharacters(char[] phraseCharacters)
         {
             var distinctCharacters = new HashSet<char>(phraseCharacters);
-            distinctCharacters.RemoveWhere(NotLetter);
+            distinctCharacters.RemoveWhere(IsNotLetter);
             return distinctCharacters;
         }
 
@@ -82,7 +84,7 @@ namespace WordGuess
         /// </summary>
         /// <param name="character">The character to check.</param>
         /// <returns>True if not a letter; false if a letter.</returns>
-        static bool NotLetter(char character)
+        static bool IsNotLetter(char character)
         {
             if (!char.IsLetter(character))
             {
@@ -93,5 +95,27 @@ namespace WordGuess
                 return false;
             }
         }
+
+        /// <summary>
+        /// Prints each character to the console depending on whether or not the player has guessed it.
+        /// </summary>
+        /// <param name="phraseCharacters">The array of characters of the phrase.</param>
+        /// <param name="phraseGuessedCharacters">The list of guessed characters.</param>
+        static void DisplayPhrase(char[] phraseCharacters, List<char> phraseGuessedCharacters)
+        {
+            foreach(char character in phraseCharacters)
+            {
+                if (phraseGuessedCharacters.Contains(character) || IsNotLetter(character))
+                {
+                    Console.Write(character);
+                }
+                else
+                {
+                    Console.Write("#");
+                }
+            }
+            Console.WriteLine();
+        }
+        
     }
 }
