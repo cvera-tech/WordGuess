@@ -26,22 +26,22 @@ namespace WordGuess
         {
             var phrases = new List<string>();
             string[] filePhrases;
-            //try
-            //{
+            try
+            {
                 filePhrases = File.ReadAllLines(@"..\..\phrases.txt");
                 phrases = filePhrases.ToList();
-            //}
-            //catch (FileNotFoundException fnfe)
-            //{
-            //    Console.WriteLine("ERROR: FILE NOT FOUND");
-            //    Console.ReadKey();
-            //    fnfe.Source
-            //}
-            //phrases.Add("To be or not to be, that is the question");
-            //phrases.Add("All the world's a stage");
-            //phrases.Add("Parting is such sweet sorrow");
-            //phrases.Add("To thine own self be true");
-            
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                Console.WriteLine("=====================");
+                Console.WriteLine("ERROR: FILE NOT FOUND");
+                Console.WriteLine("USING DEFAULT PHRASES");
+                Console.WriteLine("=====================");
+                phrases.Add("To be or not to be, that is the question");
+                phrases.Add("All the world's a stage");
+                phrases.Add("Parting is such sweet sorrow");
+                phrases.Add("To thine own self be true");
+            }
             return phrases;
         }
 
